@@ -40,6 +40,8 @@ uint32_t *sgb_scaled_border;
 sgb_border_palette_t sgb_border_palettes[4];
 uint32_t sgb_color_zero;
 
+void render_sgb_border(void);
+
 void sgb_start() {
     sgb_palette_data = calloc(1, 4096);
     sgb_tiles = calloc(1, 8192);
@@ -58,7 +60,7 @@ void sgb_start() {
     sgb_scaled_w = SGB_WIDTH*scaling;
 }
 
-inline uint32_t truecolor(uint16_t color16) {
+uint32_t truecolor(uint16_t color16) {
     uint32_t color32;
     int r, g, b; 
 
@@ -188,7 +190,7 @@ void plot_sgb_tile(int x, int y, uint8_t tile, int palette, int xflip, int yflip
     if(yflip) vflip_tile(sgb_border, x << 3, y << 3);
 }
 
-void render_sgb_border() {
+void render_sgb_border(void) {
     if(sgb_screen_mask) return;
 
 #ifdef SGB_LOG
@@ -512,11 +514,11 @@ count:
     sgb_current_bit++;
 }
 
-inline uint8_t sgb_read() {
+uint8_t sgb_read() {
     return sgb_joypad_return;
 }
 
-inline int get_index_from_palette(uint32_t color, uint32_t *palette) {
+static inline int get_index_from_palette(uint32_t color, uint32_t *palette) {
     for(int i = 0; i < 4; i++) {
         if(palette[i] == color) return i;
     }
@@ -526,7 +528,7 @@ inline int get_index_from_palette(uint32_t color, uint32_t *palette) {
     return -1;  // unreachale
 }
 
-inline int get_palette_from_pos(int x, int y) {
+static inline int get_palette_from_pos(int x, int y) {
     // THESE HAVE TO BE READ IN REVERSE ORDER
     // aka priority is for the one stated later
     for(int i = sgb_attr_block_count - 1; i >= 0; i--) {

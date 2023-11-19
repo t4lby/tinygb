@@ -139,7 +139,7 @@ void prev_palette() {
     load_bw_palette();
 }
 
-void display_start() {
+void display_start(uint32_t * buf) {
     memset(&display, 0, sizeof(display_t));
     display.lcdc = 0x91;
     display.scy = 0;
@@ -173,8 +173,9 @@ void display_start() {
     framebuffer = calloc(GB_WIDTH*GB_HEIGHT, 4);
     temp_framebuffer = calloc(GB_WIDTH*GB_HEIGHT, 4);
     background_buffer = calloc(256*256, 4);
-    if(scaling != 1) scaled_framebuffer = calloc(GB_WIDTH*GB_HEIGHT, 4*scaling*scaling*4);
-    else scaled_framebuffer = framebuffer;
+    // if(scaling != 1) scaled_framebuffer = calloc(GB_WIDTH*GB_HEIGHT, 4*scaling*scaling*4);
+    // else scaled_framebuffer = framebuffer;
+    scaled_framebuffer = buf;
 
     if(!framebuffer || !scaled_framebuffer || !temp_framebuffer || !background_buffer) {
         die(-1, "unable to allocate memory for framebuffer\n");
@@ -752,7 +753,7 @@ void plot_bg_tile(int is_window, int x, int y, uint8_t tile, uint8_t *tile_data,
     }
 }
 
-inline void hflip_sprite(uint32_t *sprite_colors, uint8_t *sprite_data) {
+static inline void hflip_sprite(uint32_t *sprite_colors, uint8_t *sprite_data) {
     // horizontal flip
     uint32_t temp_color;
     uint8_t temp_data;
@@ -771,7 +772,7 @@ inline void hflip_sprite(uint32_t *sprite_colors, uint8_t *sprite_data) {
     }
 }
 
-inline void vflip_sprite(uint32_t *sprite_colors, uint8_t *sprite_data) {
+static inline void vflip_sprite(uint32_t *sprite_colors, uint8_t *sprite_data) {
     // vertical flip
     uint32_t temp_color;
     uint8_t temp_data;

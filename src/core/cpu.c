@@ -149,14 +149,14 @@ void cpu_start() {
     //write_log("[cpu] cycles per v-line refresh = %d\n", timing.cpu_cycles_vline);
 }
 
-inline void push(uint16_t word) {
+static inline void push(uint16_t word) {
     cpu.sp--;
     write_byte(cpu.sp, (uint8_t)(word >> 8));
     cpu.sp--;
     write_byte(cpu.sp, (uint8_t)word & 0xFF);
 }
 
-inline uint16_t pop() {
+static inline uint16_t pop() {
     uint16_t val;
     val = read_byte(cpu.sp);
     cpu.sp++;

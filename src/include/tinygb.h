@@ -128,9 +128,6 @@ extern int scaling, frameskip;
 extern int scaled_w, scaled_h;
 extern int throttle_hi, throttle_lo;
 
-//extern SDL_Window *window;
-//extern SDL_Surface *surface;
-
 extern timing_t timing;
 extern int mbc_type;
 
@@ -148,7 +145,7 @@ void write_log(const char *, ...);
 void die(int, const char *, ...);
 void memory_start();
 void cpu_start();
-void display_start();
+void display_start(uint32_t * buf);
 void timer_start();
 void sound_start();
 

@@ -181,13 +181,9 @@ void resize_sgb_window() {
 }
 
 int main(int argc, char **argv) {
-    const char *extensions[3] = { "*.gb", "*.gbc", "*.dmg" };
-
     if(argc != 2) {
-        //fprintf(stdout, "usage: %s rom_name\n", argv[0]);
-        //return -1;
-        rom_filename = tinyfd_openFileDialog("Open ROM file", NULL, 3, extensions, "Game Boy ROM files", 0);
-        if(!rom_filename) return -1;
+        fprintf(stdout, "usage: %s rom_name\n", argv[0]);
+        return -1;
     } else {
         rom_filename = argv[1];
     }
